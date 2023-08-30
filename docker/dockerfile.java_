@@ -1,0 +1,21 @@
+# Use an official OpenJDK image based on Alpine Linux
+FROM openjdk:11
+
+# Set the working directory
+WORKDIR /app
+
+# Create a directory for data
+RUN mkdir data
+
+# Copy the Java source files into the container at /app/java-scripts
+COPY java-scripts /app/java-scripts
+
+# Compile the Java programs
+RUN mkdir /app/java-scripts/out
+RUN find /app/java-scripts -name '*.java' -exec javac -d /app/java-scripts/out {} +
+
+# Set the classpath
+ENV CLASSPATH /app/java-scripts/out
+
+# Run the Java program when the container launches
+CMD ["java", "HelloWorld"]
